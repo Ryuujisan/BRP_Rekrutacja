@@ -103,6 +103,7 @@ public class InventoryView : UiView
         if (active)
         {
             bool isInCorrectLocalization = GameControlller.Instance.IsCurrentLocalization(_currentSoulInformation.soulItem.UsableInLocalization);
+            UseButton.interactable = isInCorrectLocalization;
             PopUpInformation popUpInfo = new PopUpInformation
             {
                 DisableOnConfirm = isInCorrectLocalization,

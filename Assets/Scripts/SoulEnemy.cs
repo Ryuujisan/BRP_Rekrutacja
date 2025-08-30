@@ -1,16 +1,25 @@
 ﻿using UnityEngine;
 
+public enum EAtakType
+{
+    Melee, Range
+}
+
 public class SoulEnemy : MonoBehaviour, IEnemy
 {
     [SerializeField] private GameObject InteractionPanelObject;
     [SerializeField] private GameObject ActionsPanelObject;
     [SerializeField] private SpriteRenderer EnemySpriteRenderer;
 
+    public EnemyData Data => _data;
+    
+    public bool KilledByWeakness { get; private set; }
     private SpawnPoint _enemyPosition;
-
-    public void SetupEnemy(Sprite sprite, SpawnPoint spawnPoint)
+    private EnemyData _data;
+    public void SetupEnemy(EnemyData data, SpawnPoint spawnPoint)
     {
-        EnemySpriteRenderer.sprite = sprite;
+        _data = data;
+        EnemySpriteRenderer.sprite = data.Sprite;
         _enemyPosition = spawnPoint;
         gameObject.SetActive(true);
     }
@@ -44,11 +53,13 @@ public class SoulEnemy : MonoBehaviour, IEnemy
     private void UseBow()
     {
         // USE BOW
+        KilledByWeakness = _data.Wekness == EAtakType.Range;
         GameEvents.EnemyKilled?.Invoke(this);
     }
 
     private void UseSword()
     {
+        KilledByWeakness = _data.Wekness == EAtakType.Range;
         GameEvents.EnemyKilled?.Invoke(this);
         // USE SWORD
     }
@@ -78,4 +89,8 @@ public interface IEnemy
 {
     SpawnPoint GetEnemyPosition();
     GameObject GetEnemyObject();
+    
+    EnemyData Data { get; }
+    
+    bool KilledByWeakness { get;}
 }

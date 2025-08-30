@@ -1,13 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utils;
 
 public class EnenmiesController : MonoBehaviour
 {
-    [SerializeField] private List<Sprite> AllEnemies;
+    [SerializeField]
+    private int _multiplierForKillWekness = 2;
+    [SerializeField] private List<EnemyData> AllEnemies;
     [SerializeField] private List<SpawnPoint> SpawnPoints;
     [SerializeField] private GameObject EnemyPrefab;
+    
 
+    
     private int _maxEnemies = 3;
     private int _currentEnemies = 0;
 
@@ -45,6 +50,11 @@ public class EnenmiesController : MonoBehaviour
     {
         FreeSpawnPoint(enemy.GetEnemyPosition());
         DestroyKilledEnemy(enemy.GetEnemyObject());
+        
+        GameEvents.Points.Value += enemy.KilledByWeakness
+            ? enemy.Data.Points
+            :enemy.Data.Points * _multiplierForKillWekness;
+        
         StartCoroutine(SpawnEnemyViaCor());
     }
 
