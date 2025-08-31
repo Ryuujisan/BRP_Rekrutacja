@@ -31,10 +31,14 @@ public class GUIController : MonoBehaviour
     [SerializeField]
     private UiView pauseView;
 
+    [SerializeField]
+    private UiView inventory;
+
     private void Start()
     {
         if (ScreenBlocker) ScreenBlocker.InitBlocker();
         InputManager.I.OnPause += ShowPauseMenu;
+        InputManager.I.OnInventory += ShowInventory; 
     }
     
     private void ActiveInGameGUI(bool active)
@@ -74,6 +78,11 @@ public class GUIController : MonoBehaviour
     private void ShowPauseMenu()
     {
         InGameGUIButton_OnClick(pauseView);
+    }
+
+    private void ShowInventory()
+    {
+        InGameGUIButton_OnClick(inventory);
     }
     
     #endregion

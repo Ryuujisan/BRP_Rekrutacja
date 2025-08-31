@@ -12,7 +12,7 @@ public class SoulInformation : MonoBehaviour
     {
         soulItem = _soulItem;
         MainImage.sprite = soulItem.Avatar;
-        SoulButton.interactable = soulItem.UsableInLocalization == GameControlller.Instance.CurrentGameLocalization;
+       // SoulButton.interactable = soulItem.UsableInLocalization == GameControlller.Instance.CurrentGameLocalization;
         if (OnSoulClick != null)
         {
             SoulButton.onClick.AddListener(() =>

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Input;
+using UiInput;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class InventoryView : UiView
@@ -12,6 +14,9 @@ public class InventoryView : UiView
     [SerializeField] private Button UseButton;
     [SerializeField] private Button DestroyButton;
 
+    [SerializeField]
+    private SoulsGridNavigator _gridNavigator;
+
     private RectTransform _contentParent;
     private GameObject _currentSelectedGameObject;
     private SoulInformation _currentSoulInformation;
@@ -22,7 +27,14 @@ public class InventoryView : UiView
         _contentParent = (RectTransform)SoulItemPlaceHolder.transform.parent;
         InitializeInventoryItems();
     }
-
+    
+    protected override void ActiveView_OnClick(UiView viewToActive)
+    {
+        base.ActiveView_OnClick(viewToActive);
+        //StartCoroutine(UISelectHelper.GiveFocus(BackButon));
+        _gridNavigator.RebuildNavigation();
+    }
+    
     private void InitializeInventoryItems()
     {
         for (int i = 0, j = SoulController.Instance.Souls.Count; i < j; i++)
@@ -60,11 +72,20 @@ public class InventoryView : UiView
 
     private void SetupSoulInformation(SoulItem soulItem)
     {
-        Description.text = soulItem.Description;
+        Description.text = $"Use soul give: {soulItem.points} points\n\n{soulItem.Description}";
         Name.text = soulItem.Name;
         Avatar.sprite = soulItem.Avatar;
+        StartCoroutine(UISelectHelper.GiveFocus(UseButton));
         SetupUseButton(soulItem.CanBeUsed);
         SetupDestroyButton(soulItem.CanBeDestroyed);
+        InputManager.I.OnCancel += OnCancel;
+
+        void OnCancel()
+        {
+            InputManager.I.OnCancel -= OnCancel;
+            
+            _gridNavigator.ReFocus();
+        }
     }
 
     private void SelectElement(int index)

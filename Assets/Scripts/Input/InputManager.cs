@@ -35,6 +35,12 @@ namespace Input
                 Debug.Log("Inventory Press");
                 OnInventory?.Invoke();
             };
+
+            _inputMaster.UI.Cancel.performed += ctx =>
+            {
+                Debug.Log("Cancel Press");
+                OnCancel?.Invoke();
+            };
         }
         void OnEnable()
         {
