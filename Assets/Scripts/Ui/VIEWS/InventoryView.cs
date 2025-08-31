@@ -54,6 +54,7 @@ public class InventoryView : UiView
     {
         _currentSoulInformation = soulInformation;
         _currentSelectedGameObject = soulInformation.gameObject;
+        GameEvents.Points.Value += soulInformation.soulItem.points;
         SetupSoulInformation(soulInformation.soulItem);
     }
 

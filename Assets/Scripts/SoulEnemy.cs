@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using UiInput;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public enum EAtakType
 {
@@ -48,6 +51,12 @@ public class SoulEnemy : MonoBehaviour, IEnemy
     private void ActiveActionPanel(bool active)
     {
         ActionsPanelObject.SetActive(active);
+        if (active)
+        {
+            //EventSystem.current.SetSelectedGameObject(ActionsPanelObject);
+            var firstButton = ActionsPanelObject.transform.GetChild(0).gameObject.GetComponent<Button>();
+            StartCoroutine(UISelectHelper.SelectNextFrame(firstButton));
+        }
     }
 
     private void UseBow()
