@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -12,7 +13,7 @@ namespace UiInput
         #region Singleton
         public static TargetSelectedManager I { get; private set; }
         #endregion Singleton
-
+        Selectable _lastWorldSelected; 
         private readonly List<Button> _targets = new();
         
         private void Awake()
@@ -40,7 +41,7 @@ namespace UiInput
             if(EventSystem.current.currentSelectedGameObject == null && _targets.Count > 0)
             {
                 var first = _targets.OrderBy(o => o.transform.position.x).First();
-                StartCoroutine(UISelectHelper.SelectNextFrame(first));
+                StartCoroutine(UISelectHelper.GiveFocus(first));
             }
         }
 
@@ -85,6 +86,67 @@ namespace UiInput
 
             chosen.navigation = new Navigation { mode = Navigation.Mode.None };
             EventSystem.current.SetSelectedGameObject(chosen.gameObject);
+        }
+        
+        public void SetWorldActive(bool active)
+        {
+
+            if (!active && EventSystem.current)
+                _lastWorldSelected = EventSystem.current.currentSelectedGameObject
+                    ? EventSystem.current.currentSelectedGameObject.GetComponent<Selectable>()
+                    : null;
+
+            foreach (var b in _targets)
+            {
+                if (!b) continue;
+                b.interactable = active;
+
+                var nav = b.navigation;
+                nav.mode = active ? Navigation.Mode.Explicit : Navigation.Mode.None;
+                b.navigation = nav;
+            }
+
+            if (active)
+            {
+
+                RebuildNav();
+                StartCoroutine(FocusWorldNextFrame());
+            }
+            else
+            {
+
+                if (EventSystem.current &&
+                    _targets.Any(t => t && EventSystem.current.currentSelectedGameObject == t.gameObject))
+                {
+                    EventSystem.current.SetSelectedGameObject(null);
+                }
+            }
+        }
+        
+        IEnumerator FocusWorldNextFrame()
+        {
+            yield return null;
+            yield return null;
+
+            var es = EventSystem.current;
+            if (!es) yield break;
+
+
+            var candidate = _lastWorldSelected && _lastWorldSelected.IsActive() && _lastWorldSelected.interactable
+                ? _lastWorldSelected
+                : GetNearestOrFirst();  
+
+            if (candidate)
+            {
+                es.SetSelectedGameObject(null);
+                candidate.Select();
+                es.SetSelectedGameObject(candidate.gameObject);
+            }
+        }
+
+        Selectable GetNearestOrFirst()
+        {
+            return _targets.FirstOrDefault(t => t && t.IsActive() && t.interactable);
         }
     }
 }

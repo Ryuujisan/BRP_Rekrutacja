@@ -55,7 +55,7 @@ public class SoulEnemy : MonoBehaviour, IEnemy
         {
             //EventSystem.current.SetSelectedGameObject(ActionsPanelObject);
             var firstButton = ActionsPanelObject.transform.GetChild(0).gameObject.GetComponent<Button>();
-            StartCoroutine(UISelectHelper.SelectNextFrame(firstButton));
+            StartCoroutine(UISelectHelper.GiveFocus(firstButton));
         }
     }
 

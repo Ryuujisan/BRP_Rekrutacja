@@ -1,4 +1,5 @@
 ﻿using System;
+using UiInput;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +10,7 @@ public class UiView : MonoBehaviour
     private bool UnpauseOnClose = false;
 
     [SerializeField] private bool CloseOnNewView = true;
-    [SerializeField] private Button BackButon;
+    [SerializeField] protected Button BackButon;
 
     private UiView _parentView;
 
@@ -18,16 +19,18 @@ public class UiView : MonoBehaviour
         BackButon.onClick.AddListener(() => DisableView_OnClick(this));
     }
 
-    public void ActiveView_OnClick(UiView viewToActive)
+    protected virtual void ActiveView_OnClick(UiView viewToActive)
     {
         viewToActive.SetParentView(this);
         viewToActive.ActiveView();
         this.ActiveView(!CloseOnNewView);
+        
     }
 
     private void DisableView_OnClick(UiView viewToDisable)
     {
         viewToDisable.DisableView();
+        
     }
 
     public void DestroyView_OnClick(UiView viewToDisable)
@@ -58,10 +61,15 @@ public class UiView : MonoBehaviour
         {
             _parentView.ActiveView();
         }
-        
-        if (UnpauseOnClose) GameControlller.Instance.IsPaused = false;
+
+        if (UnpauseOnClose)
+        {
+            GameControlller.Instance.IsPaused = false;
+            TargetSelectedManager.I.SetWorldActive(true);
+        }
 
         this.ActiveView(false);
+        
     }
 
     public void DestroyView()
@@ -69,6 +77,7 @@ public class UiView : MonoBehaviour
         if (_parentView != null)
         {
             _parentView.ActiveView();
+            TargetSelectedManager.I.SetWorldActive(false);
         }
 
         Destroy(this.gameObject);

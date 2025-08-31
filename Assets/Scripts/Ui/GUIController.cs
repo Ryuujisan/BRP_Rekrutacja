@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Input;
+using UiInput;
+using UnityEngine;
 
 public class GUIController : MonoBehaviour
 {
@@ -15,17 +17,26 @@ public class GUIController : MonoBehaviour
 
     #endregion
 
-    [SerializeField] private GameObject DisableOnStartObject;
-    [SerializeField] private RectTransform ViewsParent;
-    [SerializeField] private GameObject InGameGuiObject;
-    [SerializeField] private PopUpView PopUp;
-    [SerializeField] private PopUpScreenBlocker ScreenBlocker;
+    [SerializeField] 
+    private GameObject DisableOnStartObject;
+    [SerializeField] 
+    private RectTransform ViewsParent;
+    [SerializeField] 
+    private GameObject InGameGuiObject;
+    [SerializeField] 
+    private PopUpView PopUp;
+    [SerializeField] 
+    private PopUpScreenBlocker ScreenBlocker;
+
+    [SerializeField]
+    private UiView pauseView;
 
     private void Start()
     {
         if (ScreenBlocker) ScreenBlocker.InitBlocker();
+        InputManager.I.OnPause += ShowPauseMenu;
     }
-
+    
     private void ActiveInGameGUI(bool active)
     {
         InGameGuiObject.SetActive(active);
@@ -48,6 +59,7 @@ public class GUIController : MonoBehaviour
 
     public void InGameGUIButton_OnClick(UiView viewToActive)
     {
+        TargetSelectedManager.I.SetWorldActive(false);
         viewToActive.ActiveView(() => ActiveInGameGUI(true));
 
         ActiveInGameGUI(false);
@@ -57,6 +69,11 @@ public class GUIController : MonoBehaviour
     public void ButtonQuit()
     {
         Application.Quit();
+    }
+
+    private void ShowPauseMenu()
+    {
+        InGameGUIButton_OnClick(pauseView);
     }
     
     #endregion

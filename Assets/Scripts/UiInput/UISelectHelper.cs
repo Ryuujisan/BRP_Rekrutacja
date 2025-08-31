@@ -6,14 +6,20 @@ namespace UiInput
 {
     public static class UISelectHelper
     {
-        public static IEnumerator SelectNextFrame(Selectable sel)
+        public static IEnumerator GiveFocus(Selectable sel, int frames = 6)
         {
-            yield return null; 
-            if (!EventSystem.current) yield break;
+     
+            for (int i = 0; i < frames; i++) yield return null;
 
-            EventSystem.current.SetSelectedGameObject(null);
-            if (sel && sel.IsActive() && sel.interactable)
-                EventSystem.current.SetSelectedGameObject(sel.gameObject);
+            var es = EventSystem.current;
+            if (!es || !sel) yield break;
+
+            es.SetSelectedGameObject(null);          
+            if (sel.IsActive() && sel.interactable)
+            {
+                sel.Select();                         
+                es.SetSelectedGameObject(sel.gameObject);
+            }
         }
     }
 }
