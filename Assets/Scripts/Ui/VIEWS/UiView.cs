@@ -27,7 +27,7 @@ public class UiView : MonoBehaviour
         
     }
 
-    private void DisableView_OnClick(UiView viewToDisable)
+    protected void DisableView_OnClick(UiView viewToDisable)
     {
         viewToDisable.DisableView();
         
@@ -57,6 +57,7 @@ public class UiView : MonoBehaviour
 
     public void DisableView()
     {
+        Debug.Log("Rise disbale on Inventory");
         if (_parentView != null)
         {
             _parentView.ActiveView();

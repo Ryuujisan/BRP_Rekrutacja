@@ -1,5 +1,7 @@
 ﻿using System;
+using UiInput;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class PopUpView : UiView
@@ -26,6 +28,7 @@ public class PopUpView : UiView
     
     public void ActivePopUpView(PopUpInformation popUpInfo)
     {
+        EventSystem.current.SetSelectedGameObject(null);     
         ClearPopUp();
         LabelText.text = popUpInfo.Header;
         MessageText.text = popUpInfo.Message;
@@ -41,6 +44,8 @@ public class PopUpView : UiView
         if (popUpInfo.DisableOnConfirm) YesButton.onClick.AddListener(() => DestroyView());
 
         ActiveView();
+        
+        UISelectHelper.GiveFocus(YesButton);
     }
     
     private void ClearPopUp()

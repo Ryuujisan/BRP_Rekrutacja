@@ -33,6 +33,7 @@ public class InventoryView : UiView
         base.ActiveView_OnClick(viewToActive);
         //StartCoroutine(UISelectHelper.GiveFocus(BackButon));
         _gridNavigator.RebuildNavigation();
+
     }
     
     private void InitializeInventoryItems()
@@ -44,11 +45,19 @@ public class InventoryView : UiView
         }
 
         SoulItemPlaceHolder.gameObject.SetActive(false);
+
     }
 
     private void OnEnable()
     {
         ClearSoulInformation();
+        InputManager.I.OnInventory += OnInventory;
+
+        void OnInventory()
+        {
+            InputManager.I.OnInventory -= OnInventory;
+            BackButon.onClick.Invoke();
+        }
     }
 
     private void ClearSoulInformation()
@@ -111,6 +120,7 @@ public class InventoryView : UiView
             Destroy(_currentSelectedGameObject);
             ClearSoulInformation();
         }
+        _gridNavigator.ReFocus();
     }
 
     private void DestroyCurrentSoul()

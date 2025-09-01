@@ -37,13 +37,28 @@ public class GUIController : MonoBehaviour
     private void Start()
     {
         if (ScreenBlocker) ScreenBlocker.InitBlocker();
+        RegisterEvent();
+    }
+
+    private void RegisterEvent()
+    {
         InputManager.I.OnPause += ShowPauseMenu;
-        InputManager.I.OnInventory += ShowInventory; 
+        InputManager.I.OnInventory += ShowInventory;
     }
     
+    private void UnRegisterEvent()
+    {
+        InputManager.I.OnPause -= ShowPauseMenu;
+        InputManager.I.OnInventory -= ShowInventory;
+    }
+
     private void ActiveInGameGUI(bool active)
     {
         InGameGuiObject.SetActive(active);
+        if (active)
+        {
+            RegisterEvent();
+        }
     }
 
     public void ShowPopUpMessage(PopUpInformation popUpInfo)
@@ -78,11 +93,13 @@ public class GUIController : MonoBehaviour
     private void ShowPauseMenu()
     {
         InGameGUIButton_OnClick(pauseView);
+        UnRegisterEvent();
     }
 
     private void ShowInventory()
     {
         InGameGUIButton_OnClick(inventory);
+        UnRegisterEvent();
     }
     
     #endregion
