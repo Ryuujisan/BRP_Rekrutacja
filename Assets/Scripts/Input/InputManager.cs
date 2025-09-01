@@ -18,19 +18,16 @@ namespace Input
 
             _inputMaster.UI.Pause.performed += ctx =>
             {
-                Debug.Log("Pasue Press");
                 OnPause?.Invoke();
             };
 
             _inputMaster.UI.Inventory.performed += ctx =>
             {
-                Debug.Log("Inventory Press");
                 OnInventory?.Invoke();
             };
 
             _inputMaster.UI.Cancel.performed += ctx =>
             {
-                Debug.Log("Cancel Press");
                 OnCancel?.Invoke();
             };
         }
