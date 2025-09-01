@@ -7,10 +7,13 @@ using UnityEngine.UI;
 public class PopUpView : UiView
 {
     public GameObject PopUpScreenBlocker;
-    [Header("Pop Up Elements")] public Text LabelText;
+
+    [Header("Pop Up Elements")]
+    public Text LabelText;
+
     public Text MessageText;
     public Button YesButton;
-    
+
     public override void Awake()
     {
         GetBackButton().onClick.AddListener(() => DestroyView_OnClick(this));
@@ -25,10 +28,10 @@ public class PopUpView : UiView
     {
         GUIController.Instance.ActiveScreenBlocker(false, this);
     }
-    
+
     public void ActivePopUpView(PopUpInformation popUpInfo)
     {
-        EventSystem.current.SetSelectedGameObject(null);     
+        EventSystem.current.SetSelectedGameObject(null);
         ClearPopUp();
         LabelText.text = popUpInfo.Header;
         MessageText.text = popUpInfo.Message;
@@ -44,10 +47,10 @@ public class PopUpView : UiView
         if (popUpInfo.DisableOnConfirm) YesButton.onClick.AddListener(() => DestroyView());
 
         ActiveView();
-        
+
         UISelectHelper.GiveFocus(YesButton);
     }
-    
+
     private void ClearPopUp()
     {
         LabelText.text = "";

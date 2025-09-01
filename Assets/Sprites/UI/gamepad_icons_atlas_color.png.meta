@@ -113,10 +113,10 @@ TextureImporter:
       name: gamepad_icons_atlas_color_0
       rect:
         serializedVersion: 2
-        x: 32
-        y: 287
-        width: 193
-        height: 193
+        x: 18
+        y: 273
+        width: 221
+        height: 221
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -135,10 +135,10 @@ TextureImporter:
       name: gamepad_icons_atlas_color_1
       rect:
         serializedVersion: 2
-        x: 288
-        y: 287
-        width: 193
-        height: 193
+        x: 274
+        y: 273
+        width: 221
+        height: 221
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -157,10 +157,10 @@ TextureImporter:
       name: gamepad_icons_atlas_color_2
       rect:
         serializedVersion: 2
-        x: 604
-        y: 439
-        width: 73
-        height: 19
+        x: 530
+        y: 273
+        width: 221
+        height: 221
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -179,10 +179,10 @@ TextureImporter:
       name: gamepad_icons_atlas_color_3
       rect:
         serializedVersion: 2
-        x: 840
-        y: 327
-        width: 113
-        height: 113
+        x: 786
+        y: 273
+        width: 221
+        height: 221
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -201,10 +201,10 @@ TextureImporter:
       name: gamepad_icons_atlas_color_4
       rect:
         serializedVersion: 2
-        x: 604
-        y: 399
-        width: 73
-        height: 19
+        x: 1064
+        y: 295
+        width: 177
+        height: 177
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -223,10 +223,10 @@ TextureImporter:
       name: gamepad_icons_atlas_color_5
       rect:
         serializedVersion: 2
-        x: 32
-        y: 31
-        width: 193
-        height: 193
+        x: 1320
+        y: 295
+        width: 177
+        height: 177
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -245,10 +245,10 @@ TextureImporter:
       name: gamepad_icons_atlas_color_6
       rect:
         serializedVersion: 2
-        x: 288
-        y: 31
-        width: 193
-        height: 193
+        x: 18
+        y: 17
+        width: 221
+        height: 221
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -267,10 +267,10 @@ TextureImporter:
       name: gamepad_icons_atlas_color_7
       rect:
         serializedVersion: 2
-        x: 604
-        y: 187
-        width: 73
-        height: 17
+        x: 274
+        y: 17
+        width: 221
+        height: 221
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -289,10 +289,10 @@ TextureImporter:
       name: gamepad_icons_atlas_color_8
       rect:
         serializedVersion: 2
-        x: 604
-        y: 151
-        width: 73
-        height: 17
+        x: 530
+        y: 17
+        width: 221
+        height: 221
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -311,10 +311,10 @@ TextureImporter:
       name: gamepad_icons_atlas_color_9
       rect:
         serializedVersion: 2
-        x: 850
-        y: 67
-        width: 147
-        height: 117
+        x: 786
+        y: 17
+        width: 221
+        height: 221
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -333,10 +333,10 @@ TextureImporter:
       name: gamepad_icons_atlas_color_10
       rect:
         serializedVersion: 2
-        x: 604
-        y: 115
-        width: 73
-        height: 17
+        x: 1060
+        y: 35
+        width: 185
+        height: 185
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -355,10 +355,10 @@ TextureImporter:
       name: gamepad_icons_atlas_color_11
       rect:
         serializedVersion: 2
-        x: 600
-        y: 388
-        width: 78
-        height: 76
+        x: 1316
+        y: 35
+        width: 185
+        height: 185
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -369,28 +369,6 @@ TextureImporter:
       bones: []
       spriteID: b9682e4a7df650f708aa3147bce48ee8
       internalID: -1631064957
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: gamepad_icons_atlas_color_12
-      rect:
-        serializedVersion: 2
-        x: 601
-        y: 112
-        width: 77
-        height: 92
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3d7de8e320c71aa6cb89b038040095f4
-      internalID: 1794304745
       vertices: []
       indices: 
       edges: []
@@ -413,7 +391,6 @@ TextureImporter:
       gamepad_icons_atlas_color_1: -618586886
       gamepad_icons_atlas_color_10: 1807351132
       gamepad_icons_atlas_color_11: -1631064957
-      gamepad_icons_atlas_color_12: 1794304745
       gamepad_icons_atlas_color_2: -796674261
       gamepad_icons_atlas_color_3: -1251564931
       gamepad_icons_atlas_color_4: -1514580062

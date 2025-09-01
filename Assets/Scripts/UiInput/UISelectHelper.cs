@@ -8,16 +8,15 @@ namespace UiInput
     {
         public static IEnumerator GiveFocus(Selectable sel, int frames = 6)
         {
-     
-            for (int i = 0; i < frames; i++) yield return null;
+            for (var i = 0; i < frames; i++) yield return null;
 
             var es = EventSystem.current;
             if (!es || !sel) yield break;
 
-            es.SetSelectedGameObject(null);          
+            es.SetSelectedGameObject(null);
             if (sel.IsActive() && sel.interactable)
             {
-                sel.Select();                         
+                sel.Select();
                 es.SetSelectedGameObject(sel.gameObject);
             }
         }

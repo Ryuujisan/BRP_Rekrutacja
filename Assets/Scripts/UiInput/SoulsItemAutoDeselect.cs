@@ -6,14 +6,25 @@ public class SoulsItemAutoDeselect : MonoBehaviour
 {
     [SerializeField]
     private SoulsGridNavigator _gridNavigator;
-    Selectable selectable;
 
-    void Awake() => selectable = GetComponent<Selectable>();
+    private Selectable selectable;
 
-    void OnDisable() => MoveFocusIfSelected();
-    void OnTransformParentChanged() => MoveFocusIfSelected();
+    private void Awake()
+    {
+        selectable = GetComponent<Selectable>();
+    }
 
-    void MoveFocusIfSelected()
+    private void OnDisable()
+    {
+        MoveFocusIfSelected();
+    }
+
+    private void OnTransformParentChanged()
+    {
+        MoveFocusIfSelected();
+    }
+
+    private void MoveFocusIfSelected()
     {
         var es = EventSystem.current;
         if (!es || !selectable) return;

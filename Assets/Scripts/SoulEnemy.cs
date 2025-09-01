@@ -1,31 +1,29 @@
 ﻿using UiInput;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public enum EAtakType
 {
-    Melee, Range
+    Melee,
+    Range
 }
 
 public class SoulEnemy : MonoBehaviour, IEnemy
 {
-    [SerializeField] private GameObject InteractionPanelObject;
-    [SerializeField] private GameObject ActionsPanelObject;
-    [SerializeField] private SpriteRenderer EnemySpriteRenderer;
+    [SerializeField]
+    private GameObject InteractionPanelObject;
 
-    public EnemyData Data => _data;
-    
-    public bool KilledByWeakness { get; private set; }
+    [SerializeField]
+    private GameObject ActionsPanelObject;
+
+    [SerializeField]
+    private SpriteRenderer EnemySpriteRenderer;
+
     private SpawnPoint _enemyPosition;
-    private EnemyData _data;
-    public void SetupEnemy(EnemyData data, SpawnPoint spawnPoint)
-    {
-        _data = data;
-        EnemySpriteRenderer.sprite = data.Sprite;
-        _enemyPosition = spawnPoint;
-        gameObject.SetActive(true);
-    }
+
+    public EnemyData Data { get; private set; }
+
+    public bool KilledByWeakness { get; private set; }
 
     public SpawnPoint GetEnemyPosition()
     {
@@ -34,7 +32,15 @@ public class SoulEnemy : MonoBehaviour, IEnemy
 
     public GameObject GetEnemyObject()
     {
-        return this.gameObject;
+        return gameObject;
+    }
+
+    public void SetupEnemy(EnemyData data, SpawnPoint spawnPoint)
+    {
+        Data = data;
+        EnemySpriteRenderer.sprite = data.Sprite;
+        _enemyPosition = spawnPoint;
+        gameObject.SetActive(true);
     }
 
     private void ActiveCombatWithEnemy()
@@ -62,13 +68,13 @@ public class SoulEnemy : MonoBehaviour, IEnemy
     private void UseBow()
     {
         // USE BOW
-        KilledByWeakness = _data.Wekness == EAtakType.Range;
+        KilledByWeakness = Data.Wekness == EAtakType.Range;
         GameEvents.EnemyKilled?.Invoke(this);
     }
 
     private void UseSword()
     {
-        KilledByWeakness = _data.Wekness == EAtakType.Range;
+        KilledByWeakness = Data.Wekness == EAtakType.Range;
         GameEvents.EnemyKilled?.Invoke(this);
         // USE SWORD
     }
@@ -96,10 +102,9 @@ public class SoulEnemy : MonoBehaviour, IEnemy
 
 public interface IEnemy
 {
+    EnemyData Data { get; }
+
+    bool KilledByWeakness { get; }
     SpawnPoint GetEnemyPosition();
     GameObject GetEnemyObject();
-    
-    EnemyData Data { get; }
-    
-    bool KilledByWeakness { get;}
 }

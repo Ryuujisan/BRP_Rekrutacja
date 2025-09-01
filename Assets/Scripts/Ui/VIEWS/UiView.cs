@@ -5,12 +5,15 @@ using UnityEngine.UI;
 
 public class UiView : MonoBehaviour
 {
+    [Header("UI VIEW elements")]
+    [SerializeField]
+    private bool UnpauseOnClose;
 
-    [Header("UI VIEW elements")] [SerializeField]
-    private bool UnpauseOnClose = false;
+    [SerializeField]
+    private bool CloseOnNewView = true;
 
-    [SerializeField] private bool CloseOnNewView = true;
-    [SerializeField] protected Button BackButon;
+    [SerializeField]
+    protected Button BackButon;
 
     private UiView _parentView;
 
@@ -23,14 +26,12 @@ public class UiView : MonoBehaviour
     {
         viewToActive.SetParentView(this);
         viewToActive.ActiveView();
-        this.ActiveView(!CloseOnNewView);
-        
+        ActiveView(!CloseOnNewView);
     }
 
     protected void DisableView_OnClick(UiView viewToDisable)
     {
         viewToDisable.DisableView();
-        
     }
 
     public void DestroyView_OnClick(UiView viewToDisable)
@@ -45,23 +46,20 @@ public class UiView : MonoBehaviour
 
     public void ActiveView(bool active)
     {
-        this.gameObject.SetActive(active);
+        gameObject.SetActive(active);
     }
 
     public void ActiveView(Action onBackButtonAction = null)
     {
         if (onBackButtonAction != null) BackButon.onClick.AddListener(() => onBackButtonAction());
 
-        if (!gameObject.activeSelf) this.ActiveView(true);
+        if (!gameObject.activeSelf) ActiveView(true);
     }
 
     public void DisableView()
     {
         Debug.Log("Rise disbale on Inventory");
-        if (_parentView != null)
-        {
-            _parentView.ActiveView();
-        }
+        if (_parentView != null) _parentView.ActiveView();
 
         if (UnpauseOnClose)
         {
@@ -69,8 +67,7 @@ public class UiView : MonoBehaviour
             TargetSelectedManager.I.SetWorldActive(true);
         }
 
-        this.ActiveView(false);
-        
+        ActiveView(false);
     }
 
     public void DestroyView()
@@ -81,7 +78,7 @@ public class UiView : MonoBehaviour
             TargetSelectedManager.I.SetWorldActive(false);
         }
 
-        Destroy(this.gameObject);
+        Destroy(gameObject);
     }
 
     public void DisableBackButton()

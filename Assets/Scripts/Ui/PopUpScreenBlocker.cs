@@ -4,7 +4,9 @@ using UnityEngine.UI;
 
 public class PopUpScreenBlocker : MonoBehaviour
 {
-    [SerializeField] private Image ScreenBlocker;
+    [SerializeField]
+    private Image ScreenBlocker;
+
     private List<PopUpView> _activePopUps;
     private bool _initDone;
 
@@ -26,20 +28,14 @@ public class PopUpScreenBlocker : MonoBehaviour
 
     public void AddPopUpView(PopUpView popUp)
     {
-        if (!_activePopUps.Contains(popUp))
-        {
-            _activePopUps.Add(popUp);
-        }
+        if (!_activePopUps.Contains(popUp)) _activePopUps.Add(popUp);
 
         UpdateScreenBlockerState();
     }
 
     public void RemovePopUpView(PopUpView popUp)
     {
-        if (_activePopUps.Contains(popUp))
-        {
-            _activePopUps.Remove(popUp);
-        }
+        if (_activePopUps.Contains(popUp)) _activePopUps.Remove(popUp);
 
         UpdateScreenBlockerState();
     }

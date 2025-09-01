@@ -5,11 +5,14 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Selectable))]
 public class SelectOnHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public bool deselectOnExit = false; // zwykle false
+    public bool deselectOnExit; // zwykle false
 
-    Selectable sel;
+    private Selectable sel;
 
-    void Awake() => sel = GetComponent<Selectable>();
+    private void Awake()
+    {
+        sel = GetComponent<Selectable>();
+    }
 
     public void OnPointerEnter(PointerEventData e)
     {

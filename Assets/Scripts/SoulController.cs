@@ -4,6 +4,9 @@ using UnityEngine;
 public class SoulController : MonoBehaviour
 {
     private static SoulController _instance;
+
+    public List<SoulItem> Souls;
+
     public static SoulController Instance
     {
         get
@@ -18,6 +21,4 @@ public class SoulController : MonoBehaviour
     {
         Instance = this;
     }
-
-    public List<SoulItem> Souls;
 }

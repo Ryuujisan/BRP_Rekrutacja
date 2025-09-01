@@ -4,28 +4,19 @@ using UnityEngine;
 
 public class GUIController : MonoBehaviour
 {
-
-    #region singleton
-
-    public static GUIController Instance;
-
-    private void Awake()
-    {
-        DisableOnStartObject.SetActive(false);
-        Instance = this;
-    }
-
-    #endregion
-
-    [SerializeField] 
+    [SerializeField]
     private GameObject DisableOnStartObject;
-    [SerializeField] 
+
+    [SerializeField]
     private RectTransform ViewsParent;
-    [SerializeField] 
+
+    [SerializeField]
     private GameObject InGameGuiObject;
-    [SerializeField] 
+
+    [SerializeField]
     private PopUpView PopUp;
-    [SerializeField] 
+
+    [SerializeField]
     private PopUpScreenBlocker ScreenBlocker;
 
     [SerializeField]
@@ -45,7 +36,7 @@ public class GUIController : MonoBehaviour
         InputManager.I.OnPause += ShowPauseMenu;
         InputManager.I.OnInventory += ShowInventory;
     }
-    
+
     private void UnRegisterEvent()
     {
         InputManager.I.OnPause -= ShowPauseMenu;
@@ -55,15 +46,12 @@ public class GUIController : MonoBehaviour
     private void ActiveInGameGUI(bool active)
     {
         InGameGuiObject.SetActive(active);
-        if (active)
-        {
-            RegisterEvent();
-        }
+        if (active) RegisterEvent();
     }
 
     public void ShowPopUpMessage(PopUpInformation popUpInfo)
     {
-        PopUpView newPopUp = Instantiate(PopUp, ViewsParent) as PopUpView;
+        var newPopUp = Instantiate(PopUp, ViewsParent);
         newPopUp.ActivePopUpView(popUpInfo);
     }
 
@@ -72,6 +60,18 @@ public class GUIController : MonoBehaviour
         if (active) ScreenBlocker.AddPopUpView(popUpView);
         else ScreenBlocker.RemovePopUpView(popUpView);
     }
+
+    #region singleton
+
+    public static GUIController Instance;
+
+    private void Awake()
+    {
+        DisableOnStartObject.SetActive(false);
+        Instance = this;
+    }
+
+    #endregion
 
 
     #region IN GAME GUI Clicks
@@ -101,6 +101,6 @@ public class GUIController : MonoBehaviour
         InGameGUIButton_OnClick(inventory);
         UnRegisterEvent();
     }
-    
+
     #endregion
 }

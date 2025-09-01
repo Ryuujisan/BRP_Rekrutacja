@@ -6,12 +6,13 @@ namespace UiInput
 {
     public enum EHintAction
     {
-        Confirm,   // X (PS) / A (Xbox)
-        Cancel,    // O (PS) / B (Xbox)
-        Options,   // Options / Menu
-        Back,      // Create / View
-        Touchpad   // Touchpad (PS only)
+        Confirm, // X (PS) / A (Xbox)
+        Cancel, // O (PS) / B (Xbox)
+        Options, // Options / Menu
+        Back, // Create / View
+        Touchpad // Touchpad (PS only)
     }
+
     public class GamepadHintUI : MonoBehaviour
     {
         [SerializeField]
@@ -19,7 +20,8 @@ namespace UiInput
 
         [SerializeField]
         private EHintAction _action;
-        void Start()
+
+        private void Start()
         {
             InputDeviceWatcher.I.OnGamepadModeChanged += Toggle;
 
@@ -27,14 +29,13 @@ namespace UiInput
             _hintImage.sprite = GamepadIcons.I.GetIcon(_action);
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             InputDeviceWatcher.I.OnGamepadModeChanged -= Toggle;
         }
 
         public void Toggle(bool visible)
         {
-            Debug.Log($"[HintUI] event received → visible={visible}");
             gameObject.SetActive(visible);
         }
     }

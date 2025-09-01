@@ -8,8 +8,9 @@ namespace UiInput
         public override void OnSelect(BaseEventData e)
         {
             base.OnSelect(e);
-            DoStateTransition(SelectionState.Highlighted, false); 
+            DoStateTransition(SelectionState.Highlighted, false);
         }
+
         public override void OnDeselect(BaseEventData e)
         {
             base.OnDeselect(e);

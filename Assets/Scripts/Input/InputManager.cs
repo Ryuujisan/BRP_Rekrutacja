@@ -1,29 +1,21 @@
 using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Input
 {
     public class InputManager : MonoBehaviour
     {
-        public static InputManager I { get; private set; }
-        
-        // === EVENTY for UI ===
-        public event Action OnConfirm;
-        public event Action OnCancel;
-        public event Action OnPause;
-        public event Action OnInventory;
-
         private InputMaster _inputMaster;
+        public static InputManager I { get; private set; }
 
-        
+
         private void Awake()
         {
             if (I == null)
                 I = this;
 
-            _inputMaster = new();
-            
+            _inputMaster = new InputMaster();
+
             _inputMaster.UI.Pause.performed += ctx =>
             {
                 Debug.Log("Pasue Press");
@@ -42,14 +34,21 @@ namespace Input
                 OnCancel?.Invoke();
             };
         }
-        void OnEnable()
+
+        private void OnEnable()
         {
-            _inputMaster.Enable();            
+            _inputMaster.Enable();
         }
+
         private void OnDestroy()
         {
             _inputMaster.Dispose();
         }
-    
+
+        // === EVENTY for UI ===
+        public event Action OnConfirm;
+        public event Action OnCancel;
+        public event Action OnPause;
+        public event Action OnInventory;
     }
 }

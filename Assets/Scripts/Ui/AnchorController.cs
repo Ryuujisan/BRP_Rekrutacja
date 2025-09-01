@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AnchorController : MonoBehaviour
 {
     public List<AnchorPosition> Anchors;
+
     private void Awake()
     {
         SetupObjectsPosition();
@@ -14,7 +16,7 @@ public class AnchorController : MonoBehaviour
         if (Anchors == null)
             return;
 
-        for(int i =0; i< Anchors.Count;i++)
+        for (var i = 0; i < Anchors.Count; i++)
         {
             Anchors[i].SetObjectPosition();
             Destroy(Anchors[i].Anchor.gameObject);
@@ -22,12 +24,12 @@ public class AnchorController : MonoBehaviour
     }
 }
 
-[System.Serializable]
+[Serializable]
 public class AnchorPosition
 {
     public RectTransform Anchor;
     public GameObject AnchoredObject;
-    public bool IsActiveAtStart = false;
+    public bool IsActiveAtStart;
 
     public void SetObjectPosition()
     {

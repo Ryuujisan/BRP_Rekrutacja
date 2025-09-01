@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,18 +11,12 @@ namespace UiInput
 
         private void OnEnable()
         {
-            if (TargetSelectedManager.I)
-            {
-                TargetSelectedManager.I.Register(_button);
-            }
+            if (TargetSelectedManager.I) TargetSelectedManager.I.Register(_button);
         }
 
         private void OnDestroy()
         {
-            if (TargetSelectedManager.I)
-            {
-                TargetSelectedManager.I.UnRegister(_button);
-            }
+            if (TargetSelectedManager.I) TargetSelectedManager.I.UnRegister(_button);
         }
 
         public void ConfirmSelection()

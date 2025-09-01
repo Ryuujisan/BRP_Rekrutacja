@@ -9,6 +9,7 @@ public class SoulsGridNavigator : MonoBehaviour
 {
     [Header("Refs")]
     public ScrollRect scrollRect;
+
     public GridLayoutGroup grid;
     public Selectable defaultFirst;
 
@@ -16,30 +17,14 @@ public class SoulsGridNavigator : MonoBehaviour
     public int columns = 3;
 
     [Header("Scrolling")]
-    public float scrollSpeed = 10f;    
-    public int waitFrames = 1;         
+    public float scrollSpeed = 10f;
 
-    GameObject _lastSel;
-    Coroutine _scrollCo;
+    public int waitFrames = 1;
 
-    void OnEnable()
-    {
-        StartCoroutine(SetupNextFrame());
-    }
+    private GameObject _lastSel;
+    private Coroutine _scrollCo;
 
-    public void ReFocus()
-    {
-        StartCoroutine(SetupNextFrame());
-    }
-    
-    IEnumerator SetupNextFrame()
-    {
-        yield return null;
-        RebuildNavigation();
-        FocusFirstAlive();
-    }
-
-    void Update()
+    private void Update()
     {
         var es = EventSystem.current;
         if (!es) return;
@@ -47,7 +32,6 @@ public class SoulsGridNavigator : MonoBehaviour
         var cur = es.currentSelectedGameObject;
         if (cur == null || !cur.activeInHierarchy)
         {
-            // spróbuj przywrócić lub wybrać pierwszy żywy
             if (_lastSel && _lastSel.activeInHierarchy) es.SetSelectedGameObject(_lastSel);
             else FocusFirstAlive();
             cur = es.currentSelectedGameObject;
@@ -61,39 +45,59 @@ public class SoulsGridNavigator : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        StartCoroutine(SetupNextFrame());
+    }
+
+    public void ReFocus()
+    {
+        StartCoroutine(SetupNextFrame());
+    }
+
+    private IEnumerator SetupNextFrame()
+    {
+        yield return null;
+        RebuildNavigation();
+        FocusFirstAlive();
+    }
+
     public void RebuildNavigation()
     {
         var items = new List<Selectable>();
         foreach (var s in GetComponentsInChildren<NavButton>(true))
-            if (s.IsActive() && s.interactable) items.Add(s);
+            if (s.IsActive() && s.interactable)
+                items.Add(s);
 
-        for (int i = 0; i < items.Count; i++)
+        for (var i = 0; i < items.Count; i++)
         {
             var n = new Navigation { mode = Navigation.Mode.Explicit };
             int row = i / columns, col = i % columns;
 
-            n.selectOnRight = FindNeighbor(items, row, col + 1,  0, +1);
-            n.selectOnLeft  = FindNeighbor(items, row, col - 1,  0, -1);
-            n.selectOnDown  = FindNeighbor(items, row + 1, col, +1,  0);
-            n.selectOnUp    = FindNeighbor(items, row - 1, col, -1,  0);
+            n.selectOnRight = FindNeighbor(items, row, col + 1, 0, +1);
+            n.selectOnLeft = FindNeighbor(items, row, col - 1, 0, -1);
+            n.selectOnDown = FindNeighbor(items, row + 1, col, +1, 0);
+            n.selectOnUp = FindNeighbor(items, row - 1, col, -1, 0);
 
             items[i].navigation = n;
         }
     }
 
-    Selectable FindNeighbor(List<Selectable> items, int r, int c, int dr, int dc)
+    private Selectable FindNeighbor(List<Selectable> items, int r, int c, int dr, int dc)
     {
-        int rows = Mathf.CeilToInt(items.Count / (float)columns);
+        var rows = Mathf.CeilToInt(items.Count / (float)columns);
         while (r >= 0 && r < rows && c >= 0 && c < columns)
         {
-            int idx = r * columns + c;
+            var idx = r * columns + c;
             if (idx >= 0 && idx < items.Count) return items[idx];
-            r += dr; c += dc;
+            r += dr;
+            c += dc;
         }
+
         return null;
     }
 
-    void FocusFirstAlive()
+    private void FocusFirstAlive()
     {
         var es = EventSystem.current;
         if (!es) return;
@@ -101,10 +105,12 @@ public class SoulsGridNavigator : MonoBehaviour
         Selectable first = null;
         if (defaultFirst && defaultFirst.IsActive() && defaultFirst.interactable) first = defaultFirst;
         else
-        {
             foreach (var s in GetComponentsInChildren<Selectable>(true))
-                if (s.IsActive() && s.interactable) { first = s; break; }
-        }
+                if (s.IsActive() && s.interactable)
+                {
+                    first = s;
+                    break;
+                }
 
         if (first)
         {
@@ -117,41 +123,41 @@ public class SoulsGridNavigator : MonoBehaviour
         }
     }
 
-    IEnumerator SmoothEnsureVisible(RectTransform item)
+    private IEnumerator SmoothEnsureVisible(RectTransform item)
     {
         if (!scrollRect || !item) yield break;
-        
+
         yield return null;
 
-        var content  = scrollRect.content;
+        var content = scrollRect.content;
         var viewport = scrollRect.viewport ? scrollRect.viewport : (RectTransform)scrollRect.transform;
-        
+
         var itemB = RectTransformUtility.CalculateRelativeRectTransformBounds(viewport, item);
-        var viewB = viewport.rect; 
+        var viewB = viewport.rect;
 
 
-        float overTop    = itemB.max.y - viewB.yMax;  
-        float overBottom = viewB.yMin - itemB.min.y;  
+        var overTop = itemB.max.y - viewB.yMax;
+        var overBottom = viewB.yMin - itemB.min.y;
 
 
         if (overTop <= 0f && overBottom <= 0f) yield break;
 
 
-        float contentH = content.rect.height;
-        float viewH    = viewport.rect.height;
-        float range    = Mathf.Max(1e-3f, contentH - viewH);
-        
-        float cur = scrollRect.verticalNormalizedPosition;
-        float target = cur;
-        
+        var contentH = content.rect.height;
+        var viewH = viewport.rect.height;
+        var range = Mathf.Max(1e-3f, contentH - viewH);
+
+        var cur = scrollRect.verticalNormalizedPosition;
+        var target = cur;
+
         if (overTop > 0f)
-            target = Mathf.Clamp01(cur + (overTop / range));
-        
+            target = Mathf.Clamp01(cur + overTop / range);
+
         if (overBottom > 0f)
-            target = Mathf.Clamp01(cur - (overBottom / range));
-        
+            target = Mathf.Clamp01(cur - overBottom / range);
+
         scrollRect.velocity = Vector2.zero;
-        
+
         float t = 0f, speed = 10f;
         while (t < 1f)
         {
@@ -159,6 +165,7 @@ public class SoulsGridNavigator : MonoBehaviour
             scrollRect.verticalNormalizedPosition = Mathf.SmoothStep(cur, target, t);
             yield return null;
         }
+
         scrollRect.verticalNormalizedPosition = target;
     }
 }

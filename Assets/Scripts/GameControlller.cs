@@ -11,6 +11,33 @@ public enum GameLocalization
 
 public class GameControlller : MonoBehaviour
 {
+    [SerializeField]
+    private GameLocalization currentGameLocalization;
+
+    private bool _isPaused;
+
+    public GameLocalization CurrentGameLocalization
+    {
+        get => currentGameLocalization;
+
+        set => currentGameLocalization = value;
+    }
+
+    public bool IsPaused
+    {
+        get => _isPaused;
+        set
+        {
+            _isPaused = value;
+            Time.timeScale = _isPaused ? 0f : 1f;
+        }
+    }
+
+    public bool IsCurrentLocalization(GameLocalization localization)
+    {
+        return CurrentGameLocalization == localization;
+    }
+
     #region Singleton
 
     private static GameControlller _instance;
@@ -31,31 +58,4 @@ public class GameControlller : MonoBehaviour
     }
 
     #endregion
-
-    [SerializeField] private GameLocalization currentGameLocalization;
-
-    public GameLocalization CurrentGameLocalization
-    {
-        get => currentGameLocalization;
-
-        set => currentGameLocalization = value;
-    }
-
-    private bool _isPaused;
-
-    public bool IsPaused
-    {
-
-        get => _isPaused;
-        set
-        {
-            _isPaused = value;
-            Time.timeScale = _isPaused ? 0f : 1f;
-        }
-    }
-
-    public bool IsCurrentLocalization(GameLocalization localization)
-    {
-        return CurrentGameLocalization == localization;
-    }
 }

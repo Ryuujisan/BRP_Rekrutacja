@@ -1,20 +1,29 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utils;
+using Random = UnityEngine.Random;
 
 public class EnenmiesController : MonoBehaviour
 {
     [SerializeField]
     private int _multiplierForKillWekness = 2;
-    [SerializeField] private List<EnemyData> AllEnemies;
-    [SerializeField] private List<SpawnPoint> SpawnPoints;
-    [SerializeField] private GameObject EnemyPrefab;
-    
 
-    
+    [SerializeField]
+    private List<EnemyData> AllEnemies;
+
+    [SerializeField]
+    private List<SpawnPoint> SpawnPoints;
+
+    [SerializeField]
+    private GameObject EnemyPrefab;
+
+    [SerializeField]
+    private FloatingText _floatingText;
+
+    private int _currentEnemies;
+
     private int _maxEnemies = 3;
-    private int _currentEnemies = 0;
 
     private void Awake()
     {
@@ -50,20 +59,21 @@ public class EnenmiesController : MonoBehaviour
     {
         FreeSpawnPoint(enemy.GetEnemyPosition());
         DestroyKilledEnemy(enemy.GetEnemyObject());
-        
-        GameEvents.Points.Value += enemy.KilledByWeakness
+
+        var points = enemy.KilledByWeakness
             ? enemy.Data.Points
-            :enemy.Data.Points * _multiplierForKillWekness;
-        
+            : enemy.Data.Points * _multiplierForKillWekness;
+        GameEvents.Points.Value += points;
+        var spawnPosition = enemy.GetEnemyObject().transform.position + Vector3.up * 2.0f;
+        var text = Instantiate(_floatingText, spawnPosition, Quaternion.identity);
+        text.Spawn(spawnPosition, $"+{points}", Color.green, enemy.KilledByWeakness);
+
         StartCoroutine(SpawnEnemyViaCor());
     }
 
     private void SpawnEnemies()
     {
-        while (_currentEnemies < _maxEnemies)
-        {
-            SpawnEnemy();
-        }
+        while (_currentEnemies < _maxEnemies) SpawnEnemy();
     }
 
     private IEnumerator SpawnEnemyViaCor()
@@ -80,20 +90,21 @@ public class EnenmiesController : MonoBehaviour
             return;
         }
 
-        int freeSpawnPointIndex = -1;
-        for (int i = 0; i < SpawnPoints.Count; i++)
+        var freeSpawnPointIndex = -1;
+        for (var i = 0; i < SpawnPoints.Count; i++)
         {
             if (SpawnPoints[i].IsOccupied) continue;
-            
+
             freeSpawnPointIndex = i;
             break;
         }
 
         if (freeSpawnPointIndex == -1) return;
-        
+
         SpawnPoints[freeSpawnPointIndex].IsOccupied = true;
-        SoulEnemy enemy = Instantiate(EnemyPrefab, SpawnPoints[freeSpawnPointIndex].Position.position, Quaternion.identity, transform).GetComponent<SoulEnemy>();
-        int spriteIndex = Random.Range(0, AllEnemies.Count);
+        var enemy = Instantiate(EnemyPrefab, SpawnPoints[freeSpawnPointIndex].Position.position, Quaternion.identity,
+            transform).GetComponent<SoulEnemy>();
+        var spriteIndex = Random.Range(0, AllEnemies.Count);
         enemy.SetupEnemy(AllEnemies[spriteIndex], SpawnPoints[freeSpawnPointIndex]);
         _currentEnemies++;
     }
@@ -105,10 +116,10 @@ public class EnenmiesController : MonoBehaviour
 
     private void FreeSpawnPoint(SpawnPoint spawnPoint)
     {
-        for (int i = 0; i < SpawnPoints.Count; i++)
+        for (var i = 0; i < SpawnPoints.Count; i++)
         {
             if (spawnPoint != SpawnPoints[i]) continue;
-            
+
             SpawnPoints[i].IsOccupied = false;
             _currentEnemies--;
             break;
@@ -119,10 +130,9 @@ public class EnenmiesController : MonoBehaviour
     {
         _maxEnemies = SpawnPoints != null ? SpawnPoints.Count : 3;
     }
-
 }
 
-[System.Serializable]
+[Serializable]
 public class SpawnPoint
 {
     public Transform Position;

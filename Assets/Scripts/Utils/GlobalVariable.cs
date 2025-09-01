@@ -2,16 +2,16 @@ using System;
 
 namespace Utils
 {
-    public class GlobalVariable <T>
+    public class GlobalVariable<T>
     {
-        public Action<T> OnValueChanged = EventUtils.Empty;
         private T _value;
+        public Action<T> OnValueChanged = EventUtils.Empty;
 
         public GlobalVariable(T value)
         {
             _value = value;
         }
-        
+
         public T Value
         {
             get => _value;
